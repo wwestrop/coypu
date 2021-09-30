@@ -126,13 +126,13 @@ namespace Coypu.Tests.When_interacting_with_the_browser
         [Test]
         public void When_query_returns_false_It_raises_an_exception()
         {
-            var state1 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
-            var state2 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
-
             var robustWrapper = new SpyTimingStrategy();
             robustWrapper.StubQueryResult(true, false);
             
             var session = BuildSession(robustWrapper);
+
+            var state1 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
+            var state2 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
 
             try
             {

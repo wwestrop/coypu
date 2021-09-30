@@ -64,12 +64,11 @@ namespace Coypu.Tests.When_interacting_with_the_browser
         [Test]
         public void It_returns_the_state_that_was_found_first_Example_1()
         {
-            var session = BuildSession(new ImmediateSingleExecutionFakeTimingStrategy());
-
             var state1 = new State(new AlwaysSucceedsQuery<bool>(true, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             var state2 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             var state3 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             
+            var session = BuildSession(new ImmediateSingleExecutionFakeTimingStrategy());
             var foundState = session.FindState(state1, state2, state3);
 
             Assert.That(foundState, Is.SameAs(state1));
@@ -78,12 +77,11 @@ namespace Coypu.Tests.When_interacting_with_the_browser
         [Test]
         public void It_returns_the_state_that_was_found_first_Example_2()
         {
-            var session = BuildSession(new ImmediateSingleExecutionFakeTimingStrategy());
-
             var state1 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             var state2 = new State(new AlwaysSucceedsQuery<bool>(true, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             var state3 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
 
+            var session = BuildSession(new ImmediateSingleExecutionFakeTimingStrategy());
             var foundState = session.FindState(state1, state2, state3);
 
             Assert.That(foundState, Is.SameAs(state2));
@@ -92,12 +90,11 @@ namespace Coypu.Tests.When_interacting_with_the_browser
         [Test]
         public void It_returns_the_state_that_was_found_first_Example_3()
         {
-            var session = BuildSession(new ImmediateSingleExecutionFakeTimingStrategy());
-
             var state1 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             var state2 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
             var state3 = new State(new AlwaysSucceedsQuery<bool>(true, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
 
+            var session = BuildSession(new ImmediateSingleExecutionFakeTimingStrategy());
             var foundState = session.FindState(state1, state2, state3);
 
             Assert.That(foundState, Is.SameAs(state3));
@@ -133,13 +130,13 @@ namespace Coypu.Tests.When_interacting_with_the_browser
         [Test]
         public void When_query_returns_false_It_raises_an_exception()
         {
+            var state1 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
+            var state2 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
+
             var robustWrapper = new SpyTimingStrategy();
             robustWrapper.StubQueryResult(true, false);
             
             var session = BuildSession(robustWrapper);
-
-            var state1 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
-            var state2 = new State(new AlwaysSucceedsQuery<bool>(false, true, TimeSpan.Zero, SessionConfiguration.RetryInterval));
 
             try
             {
